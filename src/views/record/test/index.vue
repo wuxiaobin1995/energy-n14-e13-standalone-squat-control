@@ -1,18 +1,57 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-09-12 15:12:37
- * @LastEditTime: 2022-09-12 15:59:22
+ * @LastEditTime: 2022-09-14 11:30:23
  * @Description : 测试-数据记录
 -->
 <template>
   <div class="test-record">
-    <div class="btn">
-      <el-button class="item" type="danger" round @click="handlePrecisionWeight"
-        >精准负重测试</el-button
-      >
-    </div>
-
     <div class="wrapper">
+      <div class="btn">
+        <el-button
+          class="item"
+          type="danger"
+          round
+          plain
+          @click="handlePrecisionWeight"
+          >精准负重测试</el-button
+        >
+        <el-button
+          class="item"
+          type="warning"
+          round
+          plain
+          @click="handleStandingStability"
+          >站立稳定测试</el-button
+        >
+        <el-button
+          class="item"
+          type="success"
+          round
+          plain
+          @click="handleStandingBalance"
+          >站立平衡测试</el-button
+        >
+        <el-button
+          class="item"
+          type="primary"
+          round
+          plain
+          @click="handleQuietSquatDown"
+          >静蹲测试</el-button
+        >
+        <el-button
+          class="item"
+          type="info"
+          round
+          plain
+          @click="handleDynamicSquat"
+          >动态下蹲测试</el-button
+        >
+      </div>
+
+      <div class="divider"></div>
+
       <transition mode="out-in">
         <router-view />
       </transition>
@@ -30,6 +69,34 @@ export default {
      */
     handlePrecisionWeight() {
       this.$router.push({ path: '/test-record/precision-weight' })
+    },
+
+    /**
+     * @description: 站立稳定测试
+     */
+    handleStandingStability() {
+      this.$router.push({ path: '/test-record/standing-stability' })
+    },
+
+    /**
+     * @description: 站立平衡测试
+     */
+    handleStandingBalance() {
+      this.$router.push({ path: '/test-record/standing-balance' })
+    },
+
+    /**
+     * @description: 静蹲测试
+     */
+    handleQuietSquatDown() {
+      this.$router.push({ path: '/test-record/quiet-squat-down' })
+    },
+
+    /**
+     * @description: 动态下蹲测试
+     */
+    handleDynamicSquat() {
+      this.$router.push({ path: '/test-record/dynamic-squat' })
     }
   }
 }
@@ -49,16 +116,7 @@ export default {
 .test-record {
   width: 100%;
   height: 100%;
-  @include flex(column, stretch, stretch);
-
-  .btn {
-    @include flex(row, space-around, center);
-    .item {
-      // margin: 6px 0;
-      width: 180px;
-      font-size: 22px;
-    }
-  }
+  @include flex(row, center, center);
 
   .wrapper {
     width: 96%;
@@ -66,7 +124,21 @@ export default {
     border-radius: 20px;
     background-color: #ffffff;
     box-shadow: 0 0 10px #929292;
-    padding: 20px 20px 20px 198px;
+    padding: 20px;
+
+    .btn {
+      @include flex(row, space-around, center);
+      .item {
+        width: 180px;
+        font-size: 22px;
+      }
+    }
+
+    .divider {
+      margin-top: 20px;
+      border: 1px solid rgb(204, 204, 204);
+      width: 100%;
+    }
   }
 }
 </style>

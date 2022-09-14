@@ -1,11 +1,14 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-07-28 15:58:29
- * @LastEditTime: 2022-08-02 11:22:57
+ * @LastEditTime: 2022-09-14 15:19:55
  * @Description : 精准负重测试-参数设置
 -->
 <template>
   <div class="precision-weight-set">
+    <!-- 语音播放 -->
+    <audio ref="audio" controls="controls" hidden :src="audioSrc" />
+
     <!-- 介绍说明 -->
     <div class="introduce">
       <div class="item">
@@ -101,6 +104,10 @@ export default {
       bgOneSrc: require('@/assets/img/Test/Select/背景图1.png'),
       bgTwoSrc: require('@/assets/img/Test/Select/背景图2.png'),
 
+      /* 语音相关 */
+      audioOpen: this.$store.state.voiceSwitch,
+      audioSrc: path.join(__static, `narrate/mandarin/1-精准负重测试.mp3`),
+
       /* 其他 */
       leftK: 0, // 左K
       rightK: 0, // 右K
@@ -119,6 +126,14 @@ export default {
     this.rightStandard = this.$store.state.zeroStandard.rightStandard
 
     this.initSerialPort()
+  },
+  mounted() {
+    if (this.audioOpen === true) {
+      setTimeout(() => {
+        this.$refs.audio.currentTime = 0
+        this.$refs.audio.play()
+      }, 500)
+    }
   },
   beforeDestroy() {
     // 关闭串口

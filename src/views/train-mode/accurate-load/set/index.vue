@@ -6,6 +6,9 @@
 -->
 <template>
   <div class="accurate-load-set">
+    <!-- 语音播放 -->
+    <audio ref="audio" controls="controls" hidden :src="audioSrc" />
+
     <!-- 介绍说明 -->
     <div class="introduce">
       <div class="item">
@@ -81,6 +84,10 @@ export default {
       bgSrc: require('@/assets/img/Test/Select/背景图1.png'),
       curveSrc: require('@/assets/img/Train/曲线参考图.png'),
 
+      /* 语音相关 */
+      audioOpen: this.$store.state.voiceSwitch,
+      audioSrc: path.join(__static, `narrate/mandarin/7-精准负重训练.mp3`),
+
       ultimateLoad: this.$store.state.currentUserInfo.ultimateLoad, // 患侧极限负重（kg）
       time: 10, // 训练时长（s）
       options: [
@@ -100,6 +107,15 @@ export default {
           value: '120'
         }
       ]
+    }
+  },
+
+  mounted() {
+    if (this.audioOpen === true) {
+      setTimeout(() => {
+        this.$refs.audio.currentTime = 0
+        this.$refs.audio.play()
+      }, 500)
     }
   },
 

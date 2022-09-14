@@ -1,7 +1,7 @@
 /*
  * @Author      : Mr.bin
  * @Date        : 2022-07-27 10:32:39
- * @LastEditTime: 2022-09-12 15:14:41
+ * @LastEditTime: 2022-09-14 14:01:07
  * @Description : 路由
  */
 import Vue from 'vue'
@@ -287,7 +287,39 @@ const routes = [
       {
         path: 'train-record',
         name: 'train-record',
-        component: () => import('@/views/record/train')
+        component: () => import('@/views/record/train'),
+        meta: ['训练-数据记录'],
+        redirect: '/train-record/sit-stand',
+        children: [
+          // 坐站训练
+          {
+            path: 'sit-stand',
+            name: 'sit-stand',
+            component: () => import('@/views/record/train/sit-stand'),
+            meta: ['坐站训练']
+          },
+          // 精准负重训练
+          {
+            path: 'accurate-load',
+            name: 'accurate-load',
+            component: () => import('@/views/record/train/accurate-load'),
+            meta: ['精准负重训练']
+          },
+          // 重心转移训练
+          {
+            path: 'barycenter-transfer',
+            name: 'barycenter-transfer',
+            component: () => import('@/views/record/train/barycenter-transfer'),
+            meta: ['重心转移训练']
+          },
+          // 下蹲动作训练
+          {
+            path: 'squat',
+            name: 'squat',
+            component: () => import('@/views/record/train/squat'),
+            meta: ['下蹲动作训练']
+          }
+        ]
       }
     ]
   },
@@ -306,6 +338,13 @@ const routes = [
     name: 'test-common-print',
     component: () => import('@/views/test-mode/components/test-common-print'),
     meta: ['通用测试-报告打印']
+  },
+  // 测试通用长期趋势-报告打印
+  {
+    path: '/test-tendency-print',
+    name: 'test-tendency-print',
+    component: () => import('@/views/record/test/components/TendencyPrint'),
+    meta: ['测试通用长期趋势-报告打印']
   },
 
   /* 训练报告 */
@@ -336,6 +375,13 @@ const routes = [
     name: 'squat-print',
     component: () => import('@/views/train-mode/squat/print'),
     meta: ['下蹲动作训练-报告打印']
+  },
+  // 训练通用长期趋势-报告打印
+  {
+    path: '/train-tendency-print',
+    name: 'train-tendency-print',
+    component: () => import('@/views/record/train/components/TendencyPrint'),
+    meta: ['训练通用长期趋势-报告打印']
   },
 
   {

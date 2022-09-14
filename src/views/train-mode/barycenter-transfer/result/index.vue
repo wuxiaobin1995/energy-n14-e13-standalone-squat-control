@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-17 10:16:28
- * @LastEditTime: 2022-08-17 15:12:01
+ * @LastEditTime: 2022-09-14 14:45:50
  * @Description : 重心转移训练-结果查看
 -->
 <template>
@@ -147,6 +147,11 @@ export default {
         .toArray()
         .then(res => {
           this.trainData = res[0]
+        })
+        .then(() => {
+          if (this.$store.state.currentUserInfo.affectedSide === '左') {
+            this.trainData.lastCore = 100 - parseInt(this.trainData.lastCore)
+          }
         })
         .then(() => {
           this.renderColor()

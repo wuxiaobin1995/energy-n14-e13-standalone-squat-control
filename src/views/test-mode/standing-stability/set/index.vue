@@ -1,11 +1,14 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-07-28 15:58:29
- * @LastEditTime: 2022-08-03 16:10:27
+ * @LastEditTime: 2022-09-14 15:17:54
  * @Description : 站立稳定测试-参数设置
 -->
 <template>
   <div class="standing-stability-set">
+    <!-- 语音播放 -->
+    <audio ref="audio" controls="controls" hidden :src="audioSrc" />
+
     <!-- 介绍说明 -->
     <div class="introduce">
       <div class="item">测试目的：是否可以在视觉反馈的指导下，维持稳定站立</div>
@@ -99,6 +102,10 @@ export default {
 
       bgSrc: require('@/assets/img/Test/Select/背景图1.png'),
 
+      /* 语音相关 */
+      audioOpen: this.$store.state.voiceSwitch,
+      audioSrc: path.join(__static, `narrate/mandarin/2-站立稳定测试.mp3`),
+
       /* 其他 */
       leftK: 0, // 左K
       rightK: 0, // 右K
@@ -138,6 +145,14 @@ export default {
     this.rightStandard = this.$store.state.zeroStandard.rightStandard
 
     this.initSerialPort()
+  },
+  mounted() {
+    if (this.audioOpen === true) {
+      setTimeout(() => {
+        this.$refs.audio.currentTime = 0
+        this.$refs.audio.play()
+      }, 500)
+    }
   },
   beforeDestroy() {
     // 关闭串口

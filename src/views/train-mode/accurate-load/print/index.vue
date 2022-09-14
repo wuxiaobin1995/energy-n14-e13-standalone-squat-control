@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:45:23
- * @LastEditTime: 2022-09-12 10:18:42
+ * @LastEditTime: 2022-09-14 14:11:15
  * @Description : 精准负重训练-报告打印
 -->
 <template>
