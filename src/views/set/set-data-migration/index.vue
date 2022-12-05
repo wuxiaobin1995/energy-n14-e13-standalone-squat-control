@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-07-28 14:00:00
- * @LastEditTime: 2022-12-05 17:19:08
+ * @LastEditTime: 2022-12-05 21:52:43
  * @Description : 数据迁移
 -->
 <template>
@@ -19,7 +19,6 @@
         <el-button
           class="item"
           type="success"
-          round
           @click="handleOutput"
           :loading="outputLoading"
           >导出数据（请做好备份）</el-button
@@ -37,14 +36,13 @@
         <el-button
           class="item"
           type="primary"
-          round
           @click="handleInput"
           :loading="inputLoading"
           >导入数据</el-button
         >
 
         <!-- 刷新 -->
-        <el-button class="item" type="info" round @click="handleRefresh"
+        <el-button class="item" type="info" @click="handleRefresh"
           >刷新页面</el-button
         >
       </div>
@@ -65,8 +63,8 @@ export default {
   data() {
     return {
       dirInput: `C:/energy_all_data_output.json`, // 文件绝对路径，默认`C:/energy_all_data_output.json`
-      outputLoading: false,
-      inputLoading: false
+      outputLoading: false, // 导出按钮加载动画
+      inputLoading: false // 导入按钮加载动画
     }
   },
 
@@ -84,29 +82,57 @@ export default {
      * @description: 导出数据
      */
     handleOutput() {
-      this.outputLoading = true
-      const db = initDB()
-      db.user
-        .toArray()
-        .then(res1 => {
-          db.test_data
+      this.$confirm('二次确认, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.outputLoading = true
+          const db = initDB()
+          db.user
             .toArray()
-            .then(res2 => {
-              db.train_data
+            .then(res1 => {
+              db.test_data
                 .toArray()
-                .then(res3 => {
-                  const data = {
-                    user: res1,
-                    test_data: res2,
-                    train_data: res3
-                  }
-                  Tools.outputJson(
-                    'energy_all_data_output.json',
-                    JSON.stringify(data)
-                  ) // 导出json
+                .then(res2 => {
+                  db.train_data
+                    .toArray()
+                    .then(res3 => {
+                      const data = {
+                        user: res1,
+                        test_data: res2,
+                        train_data: res3
+                      }
+                      Tools.outputJson(
+                        'energy_all_data_output.json',
+                        JSON.stringify(data)
+                      ) // 导出json
+                    })
+                    .catch(err => {
+                      this.$confirm(
+                        `导出train_data表数据失败：${err}`,
+                        '提示',
+                        {
+                          type: 'warning',
+                          center: true,
+                          showClose: false,
+                          closeOnClickModal: false,
+                          closeOnPressEscape: false,
+                          confirmButtonText: '刷 新',
+                          cancelButtonText: '返回首页'
+                        }
+                      )
+                        .then(() => {
+                          this.handleRefresh()
+                        })
+                        .catch(() => {
+                          this.handleToHome()
+                        })
+                    })
                 })
                 .catch(err => {
-                  this.$confirm(`导出train_data表数据失败：${err}`, '提示', {
+                  this.$confirm(`导出test_data表数据失败：${err}`, '提示', {
                     type: 'warning',
                     center: true,
                     showClose: false,
@@ -124,7 +150,7 @@ export default {
                 })
             })
             .catch(err => {
-              this.$confirm(`导出test_data表数据失败：${err}`, '提示', {
+              this.$confirm(`导出user表数据失败：${err}`, '提示', {
                 type: 'warning',
                 center: true,
                 showClose: false,
@@ -140,61 +166,54 @@ export default {
                   this.handleToHome()
                 })
             })
-        })
-        .catch(err => {
-          this.$confirm(`导出user表数据失败：${err}`, '提示', {
-            type: 'warning',
-            center: true,
-            showClose: false,
-            closeOnClickModal: false,
-            closeOnPressEscape: false,
-            confirmButtonText: '刷 新',
-            cancelButtonText: '返回首页'
-          })
-            .then(() => {
-              this.handleRefresh()
-            })
-            .catch(() => {
-              this.handleToHome()
+            .finally(() => {
+              this.outputLoading = false
             })
         })
-        .finally(() => {
-          this.outputLoading = false
-        })
+        .catch(() => {})
     },
 
     /**
      * @description: 导入数据
      */
     handleInput() {
-      this.inputLoading = true
-      fs.readFile(this.dirInput, async (err, res) => {
-        if (err) {
-          this.$message({
-            message: `引入文件失败：${err}`,
-            type: 'error',
-            duration: 10000
-          })
-
-          this.inputLoading = false
-        } else {
-          const result = await this.insertDatabase(JSON.parse(res)) // 插入数据库操作
-          if (result === 1) {
-            this.$message({
-              message: '数据导入成功',
-              type: 'success',
-              duration: 5000
-            })
-          }
-
-          this.inputLoading = false
-        }
+      this.$confirm('二次确认, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
       })
+        .then(() => {
+          this.inputLoading = true
+          fs.readFile(this.dirInput, async (err, res) => {
+            // 若没有报错，则err为null
+            if (err) {
+              this.$message({
+                message: `引入文件失败：${err}`,
+                type: 'error',
+                duration: 10000
+              })
+
+              this.inputLoading = false
+            } else {
+              const result = await this.insertDatabase(JSON.parse(res)) // 插入数据库操作
+              if (result === 1) {
+                this.$message({
+                  message: '数据导入成功',
+                  type: 'success',
+                  duration: 5000
+                })
+              }
+
+              this.inputLoading = false
+            }
+          })
+        })
+        .catch(() => {})
     },
 
     /**
      * @description: 插入数据库操作
-     * @param {Object} data 数据源{ }
+     * @param {Object} data 数据源{}
      * @return {} 返回成功与否
      */
     insertDatabase(data) {
@@ -292,7 +311,7 @@ export default {
     .btn {
       @include flex(column, stretch, center);
       .item {
-        margin: 40px 0;
+        margin: 50px 0;
         font-size: 28px;
       }
     }
