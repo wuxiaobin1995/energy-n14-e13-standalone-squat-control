@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-07-28 14:00:00
- * @LastEditTime: 2022-12-05 21:52:43
+ * @LastEditTime: 2022-12-06 21:05:19
  * @Description : 数据迁移
 -->
 <template>
@@ -21,7 +21,7 @@
           type="success"
           @click="handleOutput"
           :loading="outputLoading"
-          >导出数据（请做好备份）</el-button
+          >导出数据（记得做好备份）</el-button
         >
 
         <!-- 路径输入 -->
@@ -104,10 +104,10 @@ export default {
                         test_data: res2,
                         train_data: res3
                       }
-                      Tools.outputJson(
+                      Tools.outputFile(
                         'energy_all_data_output.json',
                         JSON.stringify(data)
-                      ) // 导出json
+                      ) // 导出json文件操作
                     })
                     .catch(err => {
                       this.$confirm(

@@ -1,7 +1,7 @@
 /*
  * @Author      : Mr.bin
  * @Date        : 2022-07-28 09:41:07
- * @LastEditTime: 2022-10-08 10:24:21
+ * @LastEditTime: 2022-12-06 11:19:46
  * @Description : vue.config.js
  */
 
@@ -60,8 +60,9 @@ module.exports = {
         /* nsis安装界面配置 */
         nsis: {
           oneClick: false, // 是否一键安装
+          perMachine: true, // 是否总是针对所有用户（每台机器）进行安装
           allowElevation: true, // 是否允许请求提升。如果为false，则用户必须使用提升的权限重新启动安装程序
-          allowToChangeInstallationDirectory: true, // 允许修改安装目录
+          allowToChangeInstallationDirectory: false, // 允许修改安装目录
           installerIcon: './public/ico/install/common.ico', // 安装图标
           uninstallerIcon: './public/ico/delete/common.ico', // 卸载图标
           createDesktopShortcut: true, // 创建桌面图标

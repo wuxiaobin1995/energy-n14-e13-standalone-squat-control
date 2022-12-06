@@ -1,17 +1,17 @@
 /*
  * @Author      : Mr.bin
  * @Date        : 2022-12-05 11:06:14
- * @LastEditTime: 2022-12-05 21:15:20
- * @Description : 导出json文件方法
+ * @LastEditTime: 2022-12-06 21:05:32
+ * @Description : 导出文件方法
  */
 
 const Tools = {
   /**
-   * @description: 导出json
-   * @param {String} fileName 文件保存名称，如 'energy_all_data_output.json'
-   * @param {*} data json格式的数据
+   * @description: 导出文件
+   * @param {String} fileName 文件保存名称，如 'game.txt'、'text.json'、'demo.xlsx'等等
+   * @param {*} data
    */
-  outputJson(fileName, data) {
+  outputFile(fileName, data) {
     /* 创建隐藏的可下载链接 */
     let link = document.createElement('a')
     link.download = fileName // 设置下载的默认文件名
