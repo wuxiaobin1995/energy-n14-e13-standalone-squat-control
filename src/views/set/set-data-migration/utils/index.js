@@ -1,7 +1,7 @@
 /*
  * @Author      : Mr.bin
  * @Date        : 2022-12-05 11:06:14
- * @LastEditTime: 2022-12-06 21:05:32
+ * @LastEditTime: 2022-12-16 14:30:26
  * @Description : 导出文件方法
  */
 
@@ -13,11 +13,11 @@ const Tools = {
    */
   outputFile(fileName, data) {
     /* 创建隐藏的可下载链接 */
-    let link = document.createElement('a')
+    const link = document.createElement('a')
     link.download = fileName // 设置下载的默认文件名
     link.style.display = 'none'
     /* 字符内容转变成blob地址 */
-    let blob = new Blob([data]) // 创建 blob 对象
+    const blob = new Blob([data]) // 创建 blob 对象
     link.href = URL.createObjectURL(blob) // 创建一个 URL 对象并传给 a 的 href
     /* 触发点击 */
     link.click()
