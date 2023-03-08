@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:17:15
- * @LastEditTime: 2022-09-11 16:56:43
+ * @LastEditTime: 2023-03-08 10:42:42
  * @Description : 精准负重训练-参数设置
 -->
 <template>
@@ -68,6 +68,9 @@
         @click="handleStart"
         >开始训练</el-button
       >
+      <el-button class="item" type="danger" plain @click="handleBack"
+        >返回首页</el-button
+      >
     </div>
   </div>
 </template>
@@ -131,6 +134,15 @@ export default {
           time: JSON.stringify(this.time),
           routerName: JSON.stringify('/train-select/accurate-load-set')
         }
+      })
+    },
+
+    /**
+     * @description: 返回首页
+     */
+    handleBack() {
+      this.$router.push({
+        path: '/home'
       })
     }
   }
@@ -205,6 +217,7 @@ export default {
     margin-bottom: 10px;
     @include flex(row, center, center);
     .item {
+      margin: 0 50px;
       font-size: 34px;
     }
   }

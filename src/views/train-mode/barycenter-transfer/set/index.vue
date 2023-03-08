@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:17:15
- * @LastEditTime: 2022-08-17 14:44:56
+ * @LastEditTime: 2023-03-08 10:44:02
  * @Description : 重心转移训练-参数设置
 -->
 <template>
@@ -96,6 +96,9 @@
         icon="el-icon-video-play"
         @click="handleStart"
         >开始训练</el-button
+      >
+      <el-button class="item" type="danger" plain @click="handleBack"
+        >返回首页</el-button
       >
     </div>
   </div>
@@ -398,6 +401,15 @@ export default {
     },
 
     /**
+     * @description: 返回首页
+     */
+    handleBack() {
+      this.$router.push({
+        path: '/home'
+      })
+    },
+
+    /**
      * @description: 刷新页面
      */
     handleRefresh() {
@@ -521,6 +533,7 @@ export default {
     margin-bottom: 10px;
     @include flex(row, center, center);
     .item {
+      margin: 0 50px;
       font-size: 34px;
     }
   }

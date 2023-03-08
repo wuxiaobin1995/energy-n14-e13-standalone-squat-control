@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-07-28 15:58:29
- * @LastEditTime: 2022-09-14 15:20:40
+ * @LastEditTime: 2023-03-08 10:40:05
  * @Description : 动态下蹲测试-参数设置
 -->
 <template>
@@ -69,6 +69,9 @@
         icon="el-icon-video-play"
         @click="handleStart"
         >开始测试</el-button
+      >
+      <el-button class="item" type="danger" plain @click="handleBack"
+        >返回首页</el-button
       >
     </div>
   </div>
@@ -292,6 +295,15 @@ export default {
     },
 
     /**
+     * @description: 返回首页
+     */
+    handleBack() {
+      this.$router.push({
+        path: '/home'
+      })
+    },
+
+    /**
      * @description: 刷新页面
      */
     handleRefresh() {
@@ -421,6 +433,7 @@ export default {
     margin-bottom: 10px;
     @include flex(row, center, center);
     .item {
+      margin: 0 50px;
       font-size: 34px;
     }
   }

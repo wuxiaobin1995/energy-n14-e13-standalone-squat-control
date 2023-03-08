@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:18:25
- * @LastEditTime: 2022-08-17 10:32:20
+ * @LastEditTime: 2023-03-08 10:48:19
  * @Description : 坐站训练-具体测量
 -->
 <template>
@@ -64,7 +64,7 @@
           @click="handleStart"
           :disabled="isStart"
           class="item"
-          >开始测量</el-button
+          >开始训练</el-button
         >
         <el-button
           type="success"

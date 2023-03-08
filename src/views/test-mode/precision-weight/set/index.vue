@@ -79,6 +79,9 @@
         @click="handleStart"
         >开始测试</el-button
       >
+      <el-button class="item" type="danger" plain @click="handleBack"
+        >返回首页</el-button
+      >
     </div>
   </div>
 </template>
@@ -297,6 +300,15 @@ export default {
     },
 
     /**
+     * @description: 返回首页
+     */
+    handleBack() {
+      this.$router.push({
+        path: '/home'
+      })
+    },
+
+    /**
      * @description: 刷新页面
      */
     handleRefresh() {
@@ -442,6 +454,7 @@ export default {
     margin-bottom: 10px;
     @include flex(row, center, center);
     .item {
+      margin: 0 50px;
       font-size: 34px;
     }
   }

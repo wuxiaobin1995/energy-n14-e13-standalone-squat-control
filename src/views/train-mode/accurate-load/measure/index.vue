@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:18:25
- * @LastEditTime: 2022-09-12 10:21:07
+ * @LastEditTime: 2023-03-08 10:47:40
  * @Description : 精准负重训练-具体测量
 -->
 <template>
@@ -28,7 +28,7 @@
             icon="el-icon-video-play"
             :disabled="isStart"
             @click="handleStart"
-            >开始测量</el-button
+            >开始训练</el-button
           >
         </div>
       </div>

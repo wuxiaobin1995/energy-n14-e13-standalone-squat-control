@@ -40,7 +40,7 @@
           @click="handleStart"
           :disabled="isStart"
           class="item"
-          >开 始</el-button
+          >开始训练</el-button
         >
       </div>
     </div>

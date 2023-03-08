@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:18:25
- * @LastEditTime: 2022-08-17 16:16:44
+ * @LastEditTime: 2023-03-08 10:49:08
  * @Description : 下蹲动作训练-具体测量
 -->
 <template>
@@ -64,14 +64,14 @@
           @click="handleStart"
           :disabled="isStart"
           class="item"
-          >开始测量</el-button
+          >开始训练</el-button
         >
         <el-button
           type="danger"
           @click="handleFinish"
           :disabled="!isStart"
           class="item"
-          >结束测量</el-button
+          >结束训练</el-button
         >
         <el-button
           type="success"
