@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:18:25
- * @LastEditTime: 2023-03-08 10:47:40
+ * @LastEditTime: 2023-03-10 17:00:33
  * @Description : 精准负重训练-具体测量
 -->
 <template>
@@ -459,7 +459,7 @@ export default {
         })
         .catch(() => {
           this.$alert(
-            `请点击"返回上一页"按钮，然后重新测试！`,
+            `请点击"返回上一页"按钮，然后重新训练！`,
             '数据保存失败',
             {
               type: 'error',
@@ -543,17 +543,17 @@ export default {
       .time {
         position: relative;
         @include flex(column, center, center);
-        transform: scale(0.8);
+        transform: scale(0.6);
         .img {
-          transform: scale(1.2);
+          transform: scale(1.7);
         }
         .text {
           position: absolute;
-          top: 6%;
+          top: 1%;
           left: 50%;
           transform: translateX(-50%);
           color: #ffffff;
-          font-size: 20px;
+          font-size: 26px;
         }
         .value {
           position: absolute;

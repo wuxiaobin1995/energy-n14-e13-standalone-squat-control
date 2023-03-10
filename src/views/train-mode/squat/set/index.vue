@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:17:15
- * @LastEditTime: 2022-08-17 16:03:49
+ * @LastEditTime: 2023-03-10 17:06:39
  * @Description : 下蹲动作训练-参数设置
 -->
 <template>
@@ -11,7 +11,7 @@
 
     <!-- 介绍说明 -->
     <div class="introduce">
-      <div class="item">测试目的：形成正确的静蹲/下蹲动作模式</div>
+      <div class="item">训练目的：形成正确的静蹲/下蹲动作模式</div>
       <div class="item">
         执行动作：用膝关节推开两侧软垫，进行静蹲/下蹲训练，使滑块保持在绿色区域内
       </div>
@@ -52,9 +52,9 @@
           {{ this.$store.state.currentUserInfo.affectedSide }}
         </div>
       </div>
-      <div class="item">
+      <div :style="{ display: 'none' }" class="item">
         <el-image class="img" :src="bgSrc" fit="scale-down"></el-image>
-        <div class="text">最大安全时长(s)</div>
+        <div class="text">最大安全时长(分钟)</div>
         <div class="value">
           {{ time }}
         </div>
@@ -109,7 +109,7 @@ export default {
       rightStandard: 0, // 右调零值
       leftWeight: 0, // 左负重（kg），精确到0.1kg
       rightWeight: 0, // 右负重（kg），精确到0.1kg
-      time: 120, // 最大安全时长
+      time: 60, // 最大安全时长，分钟
       core: 50, // 重心偏移值
 
       colorObj: {
@@ -301,7 +301,7 @@ export default {
       this.$router.push({
         path: '/squat-measure',
         query: {
-          time: JSON.stringify(this.time),
+          time: JSON.stringify(parseInt(this.time * 60)),
           routerName: JSON.stringify('/train-select/squat-set')
         }
       })

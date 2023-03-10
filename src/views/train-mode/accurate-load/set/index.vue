@@ -44,7 +44,7 @@
       </div>
       <div class="item">
         <el-image class="img" :src="bgSrc" fit="scale-down"></el-image>
-        <div class="text">默认时长(s)</div>
+        <div class="text">默认时长(分钟)</div>
         <div class="value">
           <el-select class="select" v-model="time">
             <el-option
@@ -92,22 +92,43 @@ export default {
       audioSrc: path.join(__static, `narrate/mandarin/7-精准负重训练.mp3`),
 
       ultimateLoad: this.$store.state.currentUserInfo.ultimateLoad, // 患侧极限负重（kg）
-      time: 10, // 训练时长（s）
+      time: 10, // 训练时长，5~60分钟
       options: [
         {
+          value: '5'
+        },
+        {
           value: '10'
+        },
+        {
+          value: '15'
+        },
+        {
+          value: '20'
+        },
+        {
+          value: '25'
         },
         {
           value: '30'
         },
         {
+          value: '35'
+        },
+        {
+          value: '40'
+        },
+        {
+          value: '45'
+        },
+        {
+          value: '50'
+        },
+        {
+          value: '55'
+        },
+        {
           value: '60'
-        },
-        {
-          value: '90'
-        },
-        {
-          value: '120'
         }
       ]
     }
@@ -131,7 +152,7 @@ export default {
         path: '/accurate-load-measure',
         query: {
           ultimateLoad: JSON.stringify(this.ultimateLoad),
-          time: JSON.stringify(this.time),
+          time: JSON.stringify(parseInt(this.time * 60)),
           routerName: JSON.stringify('/train-select/accurate-load-set')
         }
       })

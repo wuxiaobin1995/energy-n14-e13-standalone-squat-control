@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:00:06
- * @LastEditTime: 2022-09-12 15:58:50
+ * @LastEditTime: 2023-03-10 16:49:25
  * @Description : 训练-项目选择
 -->
 <template>
@@ -115,7 +115,7 @@ export default {
     handleAccurateLoad() {
       if (this.$store.state.currentUserInfo.ultimateLoad === '') {
         this.$confirm(
-          `系统检测到您还未做过精准负重测试，请先进行精准负重测试！`,
+          `系统检测到您从来没有做过精准负重测试，请先进行精准负重测试！`,
           '提示',
           {
             type: 'warning',

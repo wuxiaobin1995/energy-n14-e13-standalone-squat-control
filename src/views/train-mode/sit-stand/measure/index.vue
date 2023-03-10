@@ -16,7 +16,7 @@
 
       <!-- 介绍说明 -->
       <div class="introduce">
-        <div class="item">测试目的：可以通过座椅高低调整坐站训练难度</div>
+        <div class="item">训练目的：可以通过座椅高低调整坐站训练难度</div>
         <div class="item">
           执行动作：进行坐站训练时，尽可能调整重心使滑块保持在绿色区域
         </div>
@@ -194,7 +194,7 @@ export default {
             /* 调用 this.usbPort.open() 失败时触发（开启串口失败） */
             this.usbPort.on('error', () => {
               this.$alert(
-                `请重新连接USB线，然后点击"返回上一页"按钮，重新测试！`,
+                `请重新连接USB线，然后点击"返回上一页"按钮，重新训练！`,
                 '串口开启失败',
                 {
                   type: 'error',
@@ -263,7 +263,7 @@ export default {
           } else {
             this.$getLogger('没有检测到USB连接')
             this.$alert(
-              `请重新连接USB线，然后点击"返回上一页"按钮，重新测试！`,
+              `请重新连接USB线，然后点击"返回上一页"按钮，重新训练！`,
               '没有检测到USB连接',
               {
                 type: 'error',
@@ -280,7 +280,7 @@ export default {
         .catch(err => {
           this.$getLogger(err)
           this.$alert(
-            `${err}。请重新连接USB线，然后点击"返回上一页"按钮，重新测试！`,
+            `${err}。请重新连接USB线，然后点击"返回上一页"按钮，重新训练！`,
             `初始化SerialPort.list失败`,
             {
               type: 'error',
@@ -366,7 +366,7 @@ export default {
         })
         .catch(() => {
           this.$alert(
-            `请点击"返回上一页"按钮，然后重新测试！`,
+            `请点击"返回上一页"按钮，然后重新训练！`,
             '数据保存失败',
             {
               type: 'error',
