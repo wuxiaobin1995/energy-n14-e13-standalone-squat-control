@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:17:15
- * @LastEditTime: 2023-03-10 16:59:16
+ * @LastEditTime: 2023-03-16 09:45:57
  * @Description : 坐站训练-参数设置
 -->
 <template>
@@ -54,7 +54,7 @@
       </div>
       <div class="item">
         <el-image class="img" :src="bgSrc" fit="scale-down"></el-image>
-        <div class="text">训练时长(分钟)</div>
+        <div class="text">训练时长(s)</div>
         <div class="value">
           <el-select class="select" v-model="time">
             <el-option
@@ -116,40 +116,22 @@ export default {
       rightStandard: 0, // 右调零值
       leftWeight: 0, // 左负重（kg），精确到0.1kg
       rightWeight: 0, // 右负重（kg），精确到0.1kg
-      time: 10, // 训练时长，5~60分钟
+      time: 10, // 训练时长
       options: [
         {
-          value: '5'
-        },
-        {
           value: '10'
-        },
-        {
-          value: '15'
         },
         {
           value: '20'
         },
         {
-          value: '25'
-        },
-        {
           value: '30'
-        },
-        {
-          value: '35'
         },
         {
           value: '40'
         },
         {
-          value: '45'
-        },
-        {
           value: '50'
-        },
-        {
-          value: '55'
         },
         {
           value: '60'
@@ -334,7 +316,7 @@ export default {
       this.$router.push({
         path: '/sit-stand-measure',
         query: {
-          time: JSON.stringify(parseInt(this.time * 60)),
+          time: JSON.stringify(this.time),
           routerName: JSON.stringify('/train-select/sit-stand-set')
         }
       })

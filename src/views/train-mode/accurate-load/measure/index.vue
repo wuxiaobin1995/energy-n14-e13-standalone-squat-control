@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:18:25
- * @LastEditTime: 2023-03-10 17:00:33
+ * @LastEditTime: 2023-03-16 09:49:52
  * @Description : 精准负重训练-具体测量
 -->
 <template>
@@ -543,17 +543,17 @@ export default {
       .time {
         position: relative;
         @include flex(column, center, center);
-        transform: scale(0.6);
+        transform: scale(0.8);
         .img {
-          transform: scale(1.7);
+          transform: scale(1.3);
         }
         .text {
           position: absolute;
-          top: 1%;
+          top: 3%;
           left: 50%;
           transform: translateX(-50%);
           color: #ffffff;
-          font-size: 26px;
+          font-size: 22px;
         }
         .value {
           position: absolute;
@@ -568,15 +568,15 @@ export default {
         @include flex(column, center, center);
         transform: scale(0.8);
         .img {
-          transform: scale(1.2);
+          transform: scale(1.3);
         }
         .text {
           position: absolute;
-          top: 31%;
+          top: 33%;
           left: 50%;
           transform: translateX(-50%);
           color: #ffffff;
-          font-size: 20px;
+          font-size: 22px;
         }
         .value {
           position: absolute;
