@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:18:25
- * @LastEditTime: 2023-03-16 09:49:52
+ * @LastEditTime: 2023-04-07 10:34:16
  * @Description : 精准负重训练-具体测量
 -->
 <template>
@@ -42,6 +42,8 @@
           <div class="text">倒计时</div>
           <div class="value">{{ countDown }}</div>
         </div>
+        <!-- 超出极限警告 -->
+        <div class="warn" v-show="isWarnShow">警告，患侧负重超出安全值！</div>
         <!-- 患侧极限负重 -->
         <div class="ultimateLoad">
           <el-image class="img" :src="timeBgSrc" fit="scale-down"></el-image>
@@ -114,7 +116,9 @@ export default {
       ultimateLoadArr: [], // 极限曲线数组
       downArr: [], // 下限极限曲线数组
       pdfTime: '',
-      record: 0 // 训练完成度（%）
+      record: 0, // 训练完成度（%）
+
+      isWarnShow: false
     }
   },
 
@@ -237,8 +241,18 @@ export default {
                   /* 实时渲染图形 */
                   if (this.$store.state.currentUserInfo.affectedSide === '左') {
                     this.option.series[0].data = this.leftWeightArray
+                    if (this.leftWeight > this.ultimateLoad + 2.5) {
+                      this.isWarnShow = true
+                    } else {
+                      this.isWarnShow = false
+                    }
                   } else {
                     this.option.series[0].data = this.rightWeightArray
+                    if (this.rightWeight > this.ultimateLoad + 2.5) {
+                      this.isWarnShow = true
+                    } else {
+                      this.isWarnShow = false
+                    }
                   }
                   this.myChart.setOption(this.option)
 
@@ -344,7 +358,7 @@ export default {
             data: this.ultimateLoadArr,
             type: 'line',
             lineStyle: {
-              color: 'rgba(0, 255, 0, 0.2)'
+              color: 'rgba(0, 255, 0, 1)'
             },
             smooth: false,
             showSymbol: false
@@ -560,6 +574,14 @@ export default {
           color: #ffffff;
           font-size: 94px;
         }
+      }
+      // 超出极限警告
+      .warn {
+        @include flex(row, center, center);
+        color: red;
+        font-size: 20px;
+        font-weight: 700;
+        margin-top: 50px;
       }
       // 患侧极限负重
       .ultimateLoad {

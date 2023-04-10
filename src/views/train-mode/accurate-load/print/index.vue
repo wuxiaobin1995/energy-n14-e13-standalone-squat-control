@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:45:23
- * @LastEditTime: 2022-09-14 14:11:15
+ * @LastEditTime: 2023-04-07 09:50:46
  * @Description : 精准负重训练-报告打印
 -->
 <template>
@@ -197,7 +197,7 @@ export default {
             data: this.trainData.ultimateLoadArr,
             type: 'line',
             lineStyle: {
-              color: 'rgba(0, 255, 0, 0.2)'
+              color: 'rgba(0, 255, 0, 1)'
             },
             smooth: false,
             showSymbol: false
