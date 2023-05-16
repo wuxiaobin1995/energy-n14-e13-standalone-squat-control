@@ -15,6 +15,7 @@
         @click.native="handleToHome"
       ></el-image>
       <span class="text">下蹲与控制反馈系统训练仪软件-单机版 v2.0.0</span>
+      <!-- <span class="text">下蹲与控制反馈系统训练仪软件-单机版</span> -->
     </div>
 
     <!-- 其他 -->
