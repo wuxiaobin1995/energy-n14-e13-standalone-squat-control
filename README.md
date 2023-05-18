@@ -1,11 +1,11 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-07-27 10:33:00
- * @LastEditTime: 2022-07-28 09:43:31
+ * @LastEditTime: 2023-05-17 15:13:35
  * @Description : energy-n14-e13-standalone-squat-control
 -->
 
-# 下蹲与控制反馈系统训练仪软件-单机版
+# 下蹲与控制反馈系统训练仪-单机版
 
 ## 基本设备信息
 

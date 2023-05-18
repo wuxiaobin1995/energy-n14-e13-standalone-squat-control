@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-07-28 11:35:59
- * @LastEditTime: 2022-12-05 10:11:52
+ * @LastEditTime: 2023-05-17 15:16:49
  * @Description : 用户
 -->
 <template>
@@ -434,7 +434,7 @@ export default {
               header: tHeader, // 表头 必填
               data: exportData, // 具体数据 必填
               filename:
-                '下蹲与控制反馈系统训练仪软件-单机版-所有用户信息 ' +
+                '下蹲与控制反馈系统训练仪-单机版-所有用户信息 ' +
                 this.$moment().format('YYYY-MM-DD HH_mm_ss'), // 导出文件名，非必填
               autoWidth: true, // 自适应列宽，非必填
               bookType: 'xlsx' // 导出格式，非必填
