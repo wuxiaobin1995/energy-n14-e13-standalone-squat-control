@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:17:15
- * @LastEditTime: 2023-05-19 11:31:14
+ * @LastEditTime: 2023-05-19 14:53:16
  * @Description : 精准负重训练-参数设置
 -->
 <template>
@@ -144,25 +144,28 @@ export default {
         this.$store.state.currentUserInfo.ultimateLoad <= 100
           ? this.$store.state.currentUserInfo.ultimateLoad
           : 100, // 患侧极限负重（%），注意这里是强行让kg用%替代，毕竟需求很奇葩
-      time: 10, // 训练时长
+      time: 60, // 训练时长
       options: [
         {
           value: '10'
         },
         {
-          value: '20'
-        },
-        {
           value: '30'
         },
         {
-          value: '40'
-        },
-        {
-          value: '50'
-        },
-        {
           value: '60'
+        },
+        {
+          value: '90'
+        },
+        {
+          value: '120'
+        },
+        {
+          value: '180'
+        },
+        {
+          value: '300'
         }
       ],
 

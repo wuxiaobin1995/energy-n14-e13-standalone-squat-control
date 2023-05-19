@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:17:15
- * @LastEditTime: 2023-03-16 09:45:57
+ * @LastEditTime: 2023-05-19 14:52:07
  * @Description : 坐站训练-参数设置
 -->
 <template>
@@ -116,25 +116,28 @@ export default {
       rightStandard: 0, // 右调零值
       leftWeight: 0, // 左负重（kg），精确到0.1kg
       rightWeight: 0, // 右负重（kg），精确到0.1kg
-      time: 10, // 训练时长
+      time: 60, // 训练时长
       options: [
         {
           value: '10'
         },
         {
-          value: '20'
-        },
-        {
           value: '30'
         },
         {
-          value: '40'
-        },
-        {
-          value: '50'
-        },
-        {
           value: '60'
+        },
+        {
+          value: '90'
+        },
+        {
+          value: '120'
+        },
+        {
+          value: '180'
+        },
+        {
+          value: '300'
         }
       ],
       core: 50 // 重心偏移值
