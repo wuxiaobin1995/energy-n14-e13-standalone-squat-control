@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:18:25
- * @LastEditTime: 2023-04-07 10:34:16
+ * @LastEditTime: 2023-05-19 11:04:37
  * @Description : 精准负重训练-具体测量
 -->
 <template>
@@ -14,54 +14,95 @@
         @back="handleGoBack"
       ></el-page-header>
 
-      <div class="left">
-        <!-- 图形 -->
-        <div class="chart">
-          <div id="chart" :style="{ width: '100%', height: '100%' }"></div>
-        </div>
-        <!-- 按钮 -->
-        <div class="btn">
-          <el-button
-            class="item"
-            type="success"
-            round
-            icon="el-icon-video-play"
-            :disabled="isStart"
-            @click="handleStart"
-            >开始训练</el-button
-          >
+      <!-- 介绍说明 -->
+      <div class="introduce">
+        <div class="item">
+          执行动作：身体重量转移到患肢，将重心逐渐移动到绿色区域内
         </div>
       </div>
 
-      <div class="divider"></div>
+      <!-- 超出极限警告 -->
+      <div class="warn" v-show="isWarnShow">警告，患侧负重超出安全值！</div>
 
-      <div class="right">
+      <!-- 重心偏移 -->
+      <div class="center">
+        <div class="center-l">
+          <div>左<span class="unit">/kg</span></div>
+          <div class="value">{{ leftWeight }}</div>
+        </div>
+        <div class="center-c">
+          <div class="center-num">
+            <div class="center-num-l">
+              {{
+                this.$store.state.currentUserInfo.affectedSide === '左'
+                  ? '100%'
+                  : '0%'
+              }}
+            </div>
+            <div class="center-num-r">
+              {{
+                this.$store.state.currentUserInfo.affectedSide === '左'
+                  ? '0%'
+                  : '100%'
+              }}
+            </div>
+          </div>
+          <div class="center-bg" :style="colorObj"></div>
+          <el-slider
+            class="center-core"
+            v-model="core"
+            :disabled="true"
+            :show-tooltip="false"
+          ></el-slider>
+        </div>
+        <div class="center-r">
+          <div>右<span class="unit">/kg</span></div>
+          <div class="value">{{ rightWeight }}</div>
+        </div>
+      </div>
+
+      <!-- 参数 -->
+      <div class="set">
+        <!-- 患侧 -->
+        <div class="item">
+          <el-image class="img" :src="timeBgSrc" fit="scale-down"></el-image>
+          <div class="text">患侧</div>
+          <div class="value">
+            {{ this.$store.state.currentUserInfo.affectedSide }}
+          </div>
+        </div>
+
         <!-- 倒计时 -->
-        <div class="time">
+        <div class="item">
           <el-image class="img" :src="timeBgSrc" fit="scale-down"></el-image>
           <div class="text">倒计时</div>
           <div class="value">{{ countDown }}</div>
         </div>
-        <!-- 超出极限警告 -->
-        <div class="warn" v-show="isWarnShow">警告，患侧负重超出安全值！</div>
+
         <!-- 患侧极限负重 -->
-        <div class="ultimateLoad">
+        <div class="item">
           <el-image class="img" :src="timeBgSrc" fit="scale-down"></el-image>
-          <div class="text">极限负重</div>
+          <div class="text">负重%</div>
           <div class="value">{{ ultimateLoad }}</div>
         </div>
-        <!-- 其他按钮组 -->
-        <div class="btn">
-          <el-button
-            class="item"
-            type="primary"
-            round
-            icon="el-icon-check"
-            :disabled="!isPrint"
-            @click="handlePrint"
-            >查看报告</el-button
-          >
-        </div>
+      </div>
+
+      <!-- 按钮组 -->
+      <div class="btn">
+        <el-button
+          class="item"
+          type="success"
+          :disabled="isStart"
+          @click="handleStart"
+          >开始训练</el-button
+        >
+        <el-button
+          class="item"
+          type="primary"
+          :disabled="!isPrint"
+          @click="handlePrint"
+          >查看报告</el-button
+        >
       </div>
     </div>
   </div>
@@ -81,7 +122,7 @@ export default {
   data() {
     return {
       /* 路由传参 */
-      ultimateLoad: JSON.parse(this.$route.query.ultimateLoad), // 患侧极限负重（kg）
+      ultimateLoad: JSON.parse(this.$route.query.ultimateLoad), // 患侧极限负重（%）
       time: parseInt(JSON.parse(this.$route.query.time)), // 训练时长（s）
       routerName: JSON.parse(this.$route.query.routerName),
 
@@ -90,35 +131,46 @@ export default {
       /* 按钮禁用控制 */
       isStart: false,
       isPrint: false,
+      isWarnShow: false,
 
       /* 串口相关变量 */
       usbPort: null,
       parser: null,
       scmBaudRate: 115200, // 默认波特率115200
 
-      /* 图形相关变量 */
-      myChart: null,
-      option: {},
-      xData: [], // 横坐标数组
-
       /* 其他 */
       leftK: 0, // 左K
       rightK: 0, // 右K
       leftStandard: 0, // 左调零值
       rightStandard: 0, // 右调零值
+
       timeClock: null, // 计时器
       countDown: parseInt(JSON.parse(this.$route.query.time)), // 倒计时
+
       leftWeight: 0, // 左负重（kg），精确到0.1kg
       rightWeight: 0, // 右负重（kg），精确到0.1kg
       leftWeightArray: [], // 左负重数组
       rightWeightArray: [], // 右负重数组
+
       upArr: [], // 上限极限曲线数组
       ultimateLoadArr: [], // 极限曲线数组
       downArr: [], // 下限极限曲线数组
-      pdfTime: '',
-      record: 0, // 训练完成度（%）
 
-      isWarnShow: false
+      core: 50, // 重心偏移值
+      colorObj: {
+        'background-image': `linear-gradient(
+          to right,
+          rgba(255, 255, 0, 0.5),
+          rgba(255, 255, 0, 0.5) 47.5%,
+          rgba(0, 128, 0, 0.5) 47.5%,
+          rgba(0, 128, 0, 0.5) 52.5%,
+          rgba(255, 255, 0, 0.5) 52.5%,
+          rgba(255, 255, 0, 0.5) 100%
+        )`
+      },
+
+      record: 0, // 训练完成度（%）
+      pdfTime: ''
     }
   },
 
@@ -128,10 +180,8 @@ export default {
     this.leftStandard = this.$store.state.zeroStandard.leftStandard
     this.rightStandard = this.$store.state.zeroStandard.rightStandard
 
+    this.initColor()
     this.initSerialPort()
-  },
-  mounted() {
-    this.initChart()
   },
   beforeDestroy() {
     // 清除计时器
@@ -154,6 +204,37 @@ export default {
       this.$router.push({
         path: '/train-select/accurate-load-set'
       })
+    },
+
+    /**
+     * @description: 颜色块初始化
+     */
+    initColor() {
+      if (this.$store.state.currentUserInfo.affectedSide === '右') {
+        this.colorObj = {
+          'background-image': `linear-gradient(
+            to right,
+            rgba(255, 255, 0, 0.5),
+            rgba(255, 255, 0, 0.5) ${this.ultimateLoad - 2.5}%,
+            rgba(0, 128, 0, 0.5) ${this.ultimateLoad - 2.5}%,
+            rgba(0, 128, 0, 0.5) ${this.ultimateLoad + 2.5}%,
+            rgba(255, 255, 0, 0.5) ${this.ultimateLoad + 2.5}%,
+            rgba(255, 255, 0, 0.5) 100%
+          )`
+        }
+      } else {
+        this.colorObj = {
+          'background-image': `linear-gradient(
+            to right,
+            rgba(255, 255, 0, 0.5),
+            rgba(255, 255, 0, 0.5) ${100 - this.ultimateLoad - 2.5}%,
+            rgba(0, 128, 0, 0.5) ${100 - this.ultimateLoad - 2.5}%,
+            rgba(0, 128, 0, 0.5) ${100 - this.ultimateLoad + 2.5}%,
+            rgba(255, 255, 0, 0.5) ${100 - this.ultimateLoad + 2.5}%,
+            rgba(255, 255, 0, 0.5) 100%
+          )`
+        }
+      }
     },
 
     /**
@@ -180,7 +261,7 @@ export default {
              */
             this.usbPort = new SerialPort(comPath, {
               baudRate: this.scmBaudRate, // 默认波特率115200
-              autoOpen: false // 是否自动开启串口
+              autoOpen: true // 是否自动开启串口
             })
             /* 调用 this.usbPort.open() 成功时触发（开启串口成功） */
             this.usbPort.on('open', () => {})
@@ -234,33 +315,39 @@ export default {
               if (!isNaN(this.leftWeight) && !isNaN(this.rightWeight)) {
                 /* 过滤掉突变值 */
                 if (this.leftWeight <= 500 && this.rightWeight <= 500) {
-                  /* 数据插入数组中 */
-                  this.leftWeightArray.push(this.leftWeight)
-                  this.rightWeightArray.push(this.rightWeight)
-
-                  /* 实时渲染图形 */
-                  if (this.$store.state.currentUserInfo.affectedSide === '左') {
-                    this.option.series[0].data = this.leftWeightArray
-                    if (this.leftWeight > this.ultimateLoad + 2.5) {
-                      this.isWarnShow = true
-                    } else {
-                      this.isWarnShow = false
-                    }
+                  if (this.leftWeight + this.rightWeight !== 0) {
+                    this.core = parseInt(
+                      (
+                        (this.rightWeight /
+                          (this.leftWeight + this.rightWeight)) *
+                        100
+                      ).toFixed(0)
+                    )
                   } else {
-                    this.option.series[0].data = this.rightWeightArray
-                    if (this.rightWeight > this.ultimateLoad + 2.5) {
-                      this.isWarnShow = true
-                    } else {
-                      this.isWarnShow = false
-                    }
+                    this.core = 50
                   }
-                  this.myChart.setOption(this.option)
 
-                  if (
-                    this.leftWeightArray.length ===
-                    parseInt((this.time * 10).toFixed(0))
-                  ) {
-                    this.saveData()
+                  /* 数据插入数组中 */
+                  if (this.isStart) {
+                    this.leftWeightArray.push(this.leftWeight)
+                    this.rightWeightArray.push(this.rightWeight)
+
+                    /* 极限超出提示 */
+                    if (
+                      this.$store.state.currentUserInfo.affectedSide === '左'
+                    ) {
+                      if (this.leftWeight > this.ultimateLoad + 2.5) {
+                        this.isWarnShow = true
+                      } else {
+                        this.isWarnShow = false
+                      }
+                    } else {
+                      if (this.rightWeight > this.ultimateLoad + 2.5) {
+                        this.isWarnShow = true
+                      } else {
+                        this.isWarnShow = false
+                      }
+                    }
                   }
                 }
               }
@@ -301,85 +388,6 @@ export default {
     },
 
     /**
-     * @description: 图形初始化
-     */
-    initChart() {
-      // 计算横坐标数组
-      for (let i = 0; i < parseInt((this.time * 10).toFixed(0)); i++) {
-        this.xData.push(parseFloat((i * 0.1).toFixed(1)))
-        this.upArr.push(parseFloat((this.ultimateLoad + 2.5).toFixed(1)))
-        this.ultimateLoadArr.push(this.ultimateLoad)
-        this.downArr.push(parseFloat((this.ultimateLoad - 2.5).toFixed(1)))
-      }
-
-      this.myChart = this.$echarts.init(document.getElementById('chart'))
-      this.option = {
-        title: {
-          text: `(患侧)${this.$store.state.currentUserInfo.affectedSide}腿压力曲线`,
-          left: 'center',
-          textStyle: {
-            fontSize: 26
-          }
-        },
-        xAxis: {
-          type: 'category',
-          name: '单位：秒',
-          data: this.xData,
-          axisTick: {
-            alignWithLabel: true
-          }
-        },
-        yAxis: {
-          type: 'value',
-          name: '单位：kg',
-          min: 0
-          // max: 500
-        },
-        series: [
-          {
-            data: [],
-            type: 'line',
-            lineStyle: {
-              color: 'black'
-            },
-            smooth: true,
-            showSymbol: false
-          },
-          {
-            data: this.upArr,
-            type: 'line',
-            lineStyle: {
-              color: 'red'
-            },
-            smooth: false,
-            showSymbol: false
-          },
-          {
-            data: this.ultimateLoadArr,
-            type: 'line',
-            lineStyle: {
-              color: 'rgba(0, 255, 0, 1)'
-            },
-            smooth: false,
-            showSymbol: false
-          },
-          {
-            data: this.downArr,
-            type: 'line',
-            lineStyle: {
-              color: 'red'
-            },
-            smooth: false,
-            showSymbol: false
-          }
-        ],
-        animation: false
-      }
-
-      this.myChart.setOption(this.option)
-    },
-
-    /**
      * @description: 开始测量按钮
      */
     handleStart() {
@@ -389,14 +397,11 @@ export default {
       this.isStart = true
       this.isPrint = false
 
-      if (this.usbPort) {
-        if (!this.usbPort.isOpen) {
-          this.usbPort.open()
-        }
-      }
-
       this.timeClock = setInterval(() => {
         this.countDown -= 1
+        if (this.countDown === 0) {
+          this.saveData()
+        }
       }, 1000)
     },
 
@@ -404,12 +409,7 @@ export default {
      * @description: 保存数据逻辑
      */
     saveData() {
-      // 关闭串口
-      if (this.usbPort) {
-        if (this.usbPort.isOpen) {
-          this.usbPort.close()
-        }
-      }
+      this.isStart = false
 
       this.countDown = this.time
       // 清除计时器
@@ -417,7 +417,13 @@ export default {
         clearInterval(this.timeClock)
       }
 
-      // 计算某些值
+      // 计算完成度
+      for (let i = 0; i < this.leftWeightArray.length; i++) {
+        this.upArr.push(parseFloat((this.ultimateLoad + 2.5).toFixed(1)))
+        this.ultimateLoadArr.push(this.ultimateLoad)
+        this.downArr.push(parseFloat((this.ultimateLoad - 2.5).toFixed(1)))
+      }
+
       const yesArr = []
       for (let i = 0; i < this.leftWeightArray.length; i++) {
         if (this.$store.state.currentUserInfo.affectedSide === '左') {
@@ -439,6 +445,10 @@ export default {
       this.record = parseInt(
         ((yesArr.length / this.leftWeightArray.length) * 100).toFixed(0)
       )
+        ? parseInt(
+            ((yesArr.length / this.leftWeightArray.length) * 100).toFixed(0)
+          )
+        : 0
 
       this.pdfTime = this.$moment().format('YYYY-MM-DD HH:mm:ss')
       const hospital = window.localStorage.getItem('hospital')
@@ -454,14 +464,19 @@ export default {
           weight: this.$store.state.currentUserInfo.weight,
           birthday: this.$store.state.currentUserInfo.birthday,
           pdfTime: this.pdfTime,
+
           leftWeightArray: this.leftWeightArray,
           rightWeightArray: this.rightWeightArray,
+
           upArr: this.upArr,
           ultimateLoadArr: this.ultimateLoadArr,
           downArr: this.downArr,
+
           ultimateLoad: this.ultimateLoad,
           time: this.time,
+
           record: this.record,
+
           trainType: '精准负重训练'
         })
         .then(() => {
@@ -487,7 +502,6 @@ export default {
           )
         })
         .finally(() => {
-          this.isStart = false
           this.isPrint = true
         })
     },
@@ -522,7 +536,7 @@ export default {
     background-color: #ffffff;
     box-shadow: 0 0 10px #929292;
     position: relative;
-    @include flex(row, stretch, stretch);
+    @include flex(column, stretch, stretch);
 
     .page {
       position: absolute;
@@ -530,31 +544,86 @@ export default {
       left: 30px;
     }
 
-    .left {
-      padding: 45px 5px 10px 5px;
-      flex: 1;
+    /* 介绍说明 */
+    .introduce {
+      margin-top: 60px;
+      margin-left: 40px;
       @include flex(column, stretch, stretch);
-      .chart {
-        flex: 1;
+      .item {
+        font-size: 22px;
+        margin-bottom: 5px;
       }
-      .btn {
-        margin-bottom: 16px;
-        @include flex(row, center, center);
-        .item {
-          font-size: 30px;
+    }
+
+    /* 超出极限警告 */
+    .warn {
+      @include flex(row, center, center);
+      color: red;
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+
+    /* 重心偏移 */
+    .center {
+      flex: 1;
+      @include flex(row, center, center);
+      .center-l,
+      .center-r {
+        @include flex(column, center, center);
+        width: 140px;
+        font-size: 26px;
+        .unit {
+          font-size: 16px;
+        }
+        .value {
+          margin-top: 10px;
+          @include flex(row, center, center);
+          width: 80px;
+          padding: 4px;
+          background-color: rgb(204, 204, 204);
+          border-radius: 6px;
+        }
+      }
+      .center-c {
+        flex: 1;
+        .center-num {
+          @include flex(row, space-between, center);
+          margin-bottom: 5px;
+        }
+        .center-bg {
+          border-radius: 30px;
+          float: left;
+          width: 100%;
+          height: 60px;
+        }
+        .center-core {
+          padding-top: 10px;
+          width: 100%;
+          // 修改指针和背景的样式
+          & /deep/ .el-slider__runway {
+            background-color: #ffffff !important;
+          }
+          & /deep/ .el-slider__bar {
+            background-color: #ffffff !important;
+          }
+          & /deep/ .el-slider__button {
+            margin-top: 20px;
+            border-width: 0 10px 60px;
+            border-style: solid;
+            border-color: transparent transparent rgb(0, 0, 0);
+            border-radius: 20px;
+            background-color: rgba(182, 182, 182, 0);
+          }
         }
       }
     }
 
-    .divider {
-      border: 1px solid #e0e0e0;
-    }
-
-    .right {
-      width: 20%;
-      @include flex(column, stretch, center);
-      // 倒计时
-      .time {
+    /* 参数 */
+    .set {
+      @include flex(row, space-around, center);
+      margin-bottom: 60px;
+      .item {
         position: relative;
         @include flex(column, center, center);
         transform: scale(0.8);
@@ -567,53 +636,23 @@ export default {
           left: 50%;
           transform: translateX(-50%);
           color: #ffffff;
-          font-size: 22px;
+          font-size: 20px;
         }
         .value {
           position: absolute;
           color: #ffffff;
-          font-size: 94px;
+          font-size: 80px;
         }
       }
-      // 超出极限警告
-      .warn {
-        @include flex(row, center, center);
-        color: red;
-        font-size: 20px;
-        font-weight: 700;
-        margin-top: 50px;
-      }
-      // 患侧极限负重
-      .ultimateLoad {
-        flex: 1;
-        position: relative;
-        @include flex(column, center, center);
-        transform: scale(0.8);
-        .img {
-          transform: scale(1.3);
-        }
-        .text {
-          position: absolute;
-          top: 33%;
-          left: 50%;
-          transform: translateX(-50%);
-          color: #ffffff;
-          font-size: 22px;
-        }
-        .value {
-          position: absolute;
-          color: #ffffff;
-          font-size: 94px;
-        }
-      }
-      // 其他按钮组
-      .btn {
-        width: 80%;
-        margin-bottom: 50px;
-        @include flex(column, center, stretch);
-        .item {
-          margin: 5px 0;
-        }
+    }
+
+    /* 按钮组 */
+    .btn {
+      margin-bottom: 30px;
+      @include flex(row, center, center);
+      .item {
+        font-size: 34px;
+        margin: 0 60px;
       }
     }
   }

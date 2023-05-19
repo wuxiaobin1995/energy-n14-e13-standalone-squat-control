@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:45:23
- * @LastEditTime: 2023-04-07 09:50:46
+ * @LastEditTime: 2023-05-19 09:29:19
  * @Description : 精准负重训练-报告打印
 -->
 <template>
@@ -31,7 +31,7 @@
       <div class="right">
         <div class="result result-print">
           <div class="item">训练时长：{{ trainData.time }}s</div>
-          <div class="item">极限负重：{{ trainData.ultimateLoad }}kg</div>
+          <div class="item">极限负重：{{ trainData.ultimateLoad }}%</div>
           <div class="item">完成度：{{ trainData.record }}%</div>
         </div>
         <div class="btn-print btn">
@@ -166,7 +166,7 @@ export default {
         },
         yAxis: {
           type: 'value',
-          name: '单位：kg',
+          name: '单位：%',
           min: 0
           // max: 500
         },

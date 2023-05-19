@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:18:25
- * @LastEditTime: 2023-03-08 10:49:08
+ * @LastEditTime: 2023-05-19 10:22:58
  * @Description : 下蹲动作训练-具体测量
 -->
 <template>
