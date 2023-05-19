@@ -315,17 +315,24 @@ export default {
               if (!isNaN(this.leftWeight) && !isNaN(this.rightWeight)) {
                 /* 过滤掉突变值 */
                 if (this.leftWeight <= 500 && this.rightWeight <= 500) {
-                  if (this.leftWeight + this.rightWeight !== 0) {
-                    this.core = parseInt(
-                      (
-                        (this.rightWeight /
-                          (this.leftWeight + this.rightWeight)) *
-                        100
-                      ).toFixed(0)
-                    )
+                  if (this.$store.state.currentUserInfo.affectedSide === '左') {
+                    this.core =
+                      this.leftWeight <= 100 ? 100 - this.leftWeight : 0
                   } else {
-                    this.core = 50
+                    this.core = this.rightWeight <= 100 ? this.rightWeight : 100
                   }
+
+                  // if (this.leftWeight + this.rightWeight !== 0) {
+                  //   this.core = parseInt(
+                  //     (
+                  //       (this.rightWeight /
+                  //         (this.leftWeight + this.rightWeight)) *
+                  //       100
+                  //     ).toFixed(0)
+                  //   )
+                  // } else {
+                  //   this.core = 50
+                  // }
 
                   /* 数据插入数组中 */
                   if (this.isStart) {
