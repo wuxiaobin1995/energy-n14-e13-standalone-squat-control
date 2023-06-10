@@ -113,29 +113,31 @@ export default {
      * @description: 精准负重训练
      */
     handleAccurateLoad() {
-      if (this.$store.state.currentUserInfo.ultimateLoad === '') {
-        this.$confirm(
-          `系统检测到您从来没有做过精准负重测试，请先进行精准负重测试！`,
-          '提示',
-          {
-            type: 'warning',
-            showClose: false,
-            closeOnClickModal: false,
-            closeOnPressEscape: false,
-            center: true,
-            confirmButtonText: '确 定',
-            cancelButtonText: '取 消'
-          }
-        )
-          .then(() => {
-            this.$router.push({
-              path: '/test-select'
-            })
-          })
-          .catch(() => {})
-      } else {
-        this.$router.push({ path: '/train-select/accurate-load-set' })
-      }
+      // if (this.$store.state.currentUserInfo.ultimateLoad === '') {
+      //   this.$confirm(
+      //     `系统检测到您从来没有做过精准负重测试，请先进行精准负重测试！`,
+      //     '提示',
+      //     {
+      //       type: 'warning',
+      //       showClose: false,
+      //       closeOnClickModal: false,
+      //       closeOnPressEscape: false,
+      //       center: true,
+      //       confirmButtonText: '确 定',
+      //       cancelButtonText: '取 消'
+      //     }
+      //   )
+      //     .then(() => {
+      //       this.$router.push({
+      //         path: '/test-select'
+      //       })
+      //     })
+      //     .catch(() => {})
+      // } else {
+      //   this.$router.push({ path: '/train-select/accurate-load-set' })
+      // }
+
+      this.$router.push({ path: '/train-select/accurate-load-set' })
     },
 
     /**

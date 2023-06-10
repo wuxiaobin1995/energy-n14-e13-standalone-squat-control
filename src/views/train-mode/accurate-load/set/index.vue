@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:17:15
- * @LastEditTime: 2023-05-19 14:53:16
+ * @LastEditTime: 2023-06-09 10:10:28
  * @Description : 精准负重训练-参数设置
 -->
 <template>
@@ -140,10 +140,11 @@ export default {
       leftWeight: 0, // 左负重（kg），精确到0.1kg
       rightWeight: 0, // 右负重（kg），精确到0.1kg
       core: 50, // 重心偏移值
-      ultimateLoad:
-        this.$store.state.currentUserInfo.ultimateLoad <= 100
-          ? this.$store.state.currentUserInfo.ultimateLoad
-          : 100, // 患侧极限负重（%），注意这里是强行让kg用%替代，毕竟需求很奇葩
+      ultimateLoad: 50,
+      // ultimateLoad:
+      //   this.$store.state.currentUserInfo.ultimateLoad <= 100
+      //     ? this.$store.state.currentUserInfo.ultimateLoad
+      //     : 100, // 患侧极限负重（%），注意这里是强行让kg用%替代，毕竟需求很奇葩
       time: 60, // 训练时长
       options: [
         {
@@ -288,23 +289,23 @@ export default {
               }
               /* 数据校验 */
               if (!isNaN(this.leftWeight) && !isNaN(this.rightWeight)) {
-                if (this.$store.state.currentUserInfo.affectedSide === '左') {
-                  this.core = this.leftWeight <= 100 ? 100 - this.leftWeight : 0
-                } else {
-                  this.core = this.rightWeight <= 100 ? this.rightWeight : 100
-                }
-
-                // if (this.leftWeight + this.rightWeight !== 0) {
-                //   this.core = parseInt(
-                //     (
-                //       (this.rightWeight /
-                //         (this.leftWeight + this.rightWeight)) *
-                //       100
-                //     ).toFixed(0)
-                //   )
+                // if (this.$store.state.currentUserInfo.affectedSide === '左') {
+                //   this.core = this.leftWeight <= 100 ? 100 - this.leftWeight : 0
                 // } else {
-                //   this.core = 50
+                //   this.core = this.rightWeight <= 100 ? this.rightWeight : 100
                 // }
+
+                if (this.leftWeight + this.rightWeight !== 0) {
+                  this.core = parseInt(
+                    (
+                      (this.rightWeight /
+                        (this.leftWeight + this.rightWeight)) *
+                      100
+                    ).toFixed(0)
+                  )
+                } else {
+                  this.core = 50
+                }
               }
             })
           } else {

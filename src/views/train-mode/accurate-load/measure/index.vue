@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:18:25
- * @LastEditTime: 2023-05-19 11:04:37
+ * @LastEditTime: 2023-06-10 09:47:05
  * @Description : 精准负重训练-具体测量
 -->
 <template>
@@ -315,24 +315,24 @@ export default {
               if (!isNaN(this.leftWeight) && !isNaN(this.rightWeight)) {
                 /* 过滤掉突变值 */
                 if (this.leftWeight <= 500 && this.rightWeight <= 500) {
-                  if (this.$store.state.currentUserInfo.affectedSide === '左') {
-                    this.core =
-                      this.leftWeight <= 100 ? 100 - this.leftWeight : 0
-                  } else {
-                    this.core = this.rightWeight <= 100 ? this.rightWeight : 100
-                  }
-
-                  // if (this.leftWeight + this.rightWeight !== 0) {
-                  //   this.core = parseInt(
-                  //     (
-                  //       (this.rightWeight /
-                  //         (this.leftWeight + this.rightWeight)) *
-                  //       100
-                  //     ).toFixed(0)
-                  //   )
+                  // if (this.$store.state.currentUserInfo.affectedSide === '左') {
+                  //   this.core =
+                  //     this.leftWeight <= 100 ? 100 - this.leftWeight : 0
                   // } else {
-                  //   this.core = 50
+                  //   this.core = this.rightWeight <= 100 ? this.rightWeight : 100
                   // }
+
+                  if (this.leftWeight + this.rightWeight !== 0) {
+                    this.core = parseInt(
+                      (
+                        (this.rightWeight /
+                          (this.leftWeight + this.rightWeight)) *
+                        100
+                      ).toFixed(0)
+                    )
+                  } else {
+                    this.core = 50
+                  }
 
                   /* 数据插入数组中 */
                   if (this.isStart) {
@@ -433,20 +433,30 @@ export default {
 
       const yesArr = []
       for (let i = 0; i < this.leftWeightArray.length; i++) {
+        let core = 0
         if (this.$store.state.currentUserInfo.affectedSide === '左') {
-          if (
-            this.leftWeightArray[i] >= this.downArr[i] &&
-            this.leftWeightArray[i] <= this.upArr[i]
-          ) {
-            yesArr.push(1)
-          }
+          core = parseInt(
+            (
+              (this.leftWeightArray[i] /
+                (this.leftWeightArray[i] + this.rightWeightArray[i])) *
+              100
+            ).toFixed(0)
+          )
         } else {
-          if (
-            this.rightWeightArray[i] >= this.downArr[i] &&
-            this.rightWeightArray[i] <= this.upArr[i]
-          ) {
-            yesArr.push(1)
-          }
+          core =
+            100 -
+            parseInt(
+              (this.leftWeightArray[i] /
+                (this.leftWeightArray[i] + this.rightWeightArray[i])) *
+                100
+            )
+        }
+
+        if (!core) {
+          core = 50
+        }
+        if (core >= this.downArr[i] && core <= this.upArr[i]) {
+          yesArr.push(1)
         }
       }
       this.record = parseInt(
