@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-08-16 14:45:23
- * @LastEditTime: 2023-05-19 09:29:19
+ * @LastEditTime: 2023-06-20 13:50:29
  * @Description : 精准负重训练-报告打印
 -->
 <template>
@@ -147,6 +147,36 @@ export default {
         this.xData.push(parseFloat((i * 0.1).toFixed(1)))
       }
 
+      // 计算比值
+      const resArr = []
+      for (let i = 0; i < this.trainData.leftWeightArray.length; i++) {
+        let core = 0
+        if (this.$store.state.currentUserInfo.affectedSide === '左') {
+          core = parseInt(
+            (
+              (this.trainData.leftWeightArray[i] /
+                (this.trainData.leftWeightArray[i] +
+                  this.trainData.rightWeightArray[i])) *
+              100
+            ).toFixed(0)
+          )
+        } else {
+          core =
+            100 -
+            parseInt(
+              (this.trainData.leftWeightArray[i] /
+                (this.trainData.leftWeightArray[i] +
+                  this.trainData.rightWeightArray[i])) *
+                100
+            )
+        }
+
+        if (!core) {
+          core = 50
+        }
+        resArr.push(core)
+      }
+
       this.myChart = this.$echarts.init(document.getElementById('chart'))
       this.option = {
         title: {
@@ -172,10 +202,7 @@ export default {
         },
         series: [
           {
-            data:
-              this.$store.state.currentUserInfo.affectedSide === '左'
-                ? this.trainData.leftWeightArray
-                : this.trainData.rightWeightArray,
+            data: resArr,
             type: 'line',
             lineStyle: {
               color: 'black',
