@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2023-06-22 17:23:11
- * @LastEditTime: 2023-06-22 17:26:04
+ * @LastEditTime: 2023-07-03 15:58:13
  * @Description : 导出所选用户的数据（测试、训练、......）
 -->
 <template>
@@ -97,6 +97,7 @@ export default {
       loading: false, // 加载动画
 
       allUserData: [], // user表的所有用户数据
+
       allTestData: [], // test_data表的所有数据
       allTrainData: [], // train_data表的所有数据
 
@@ -203,7 +204,12 @@ export default {
                 hospital: '医院',
                 pdfTime: '测量时间',
                 affectedSide: '患侧',
-                testType: '类型'
+                testType: '类型',
+                leftAverageWeight: '左负重平均值kg',
+                rightAverageWeight: '右负重平均值kg',
+                leftAverageWeightPercent: '左负重平均百分比%',
+                rightAverageWeightPercent: '右负重平均百分比%',
+                dataArray: '数据源kg（精准负重专用）'
               }
               const tHeader = Object.values(excelTitle)
               // 会根据key键的顺序、属性值等动态变化
@@ -302,7 +308,11 @@ export default {
                 pdfTime: '测量时间',
                 affectedSide: '患侧',
                 trainType: '类型',
-                record: '完成度%'
+                leftAverageWeight: '左负重平均值kg',
+                rightAverageWeight: '右负重平均值kg',
+                leftAverageWeightPercent: '左负重平均百分比%',
+                rightAverageWeightPercent: '右负重平均百分比%',
+                record: '完成度%（精准负重专用）'
               }
               const tHeader = Object.values(excelTitle)
               // 会根据key键的顺序、属性值等动态变化
