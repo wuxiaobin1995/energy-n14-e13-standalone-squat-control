@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-07-28 10:25:39
- * @LastEditTime: 2023-05-18 11:20:27
+ * @LastEditTime: 2024-03-25 14:22:38
  * @Description : 顶部栏
 -->
 <template>
@@ -14,7 +14,7 @@
         fit="scale-down"
         @click.native="handleToHome"
       ></el-image>
-      <span class="text">下蹲与控制反馈系统训练仪</span>
+      <span class="text">下蹲与控制反馈系统训练仪 V2.0.0.0</span>
     </div>
 
     <!-- 其他 -->

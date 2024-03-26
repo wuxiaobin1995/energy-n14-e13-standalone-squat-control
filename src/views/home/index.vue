@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-07-28 11:18:12
- * @LastEditTime: 2023-06-26 11:00:56
+ * @LastEditTime: 2024-03-25 14:29:53
  * @Description : home
 -->
 <template>
@@ -12,6 +12,12 @@
       </div>
       <div class="one">
         <el-image
+          class="item item2"
+          :src="src2"
+          fit="scale-down"
+          @click.native="handleClick('src2')"
+        ></el-image>
+        <el-image
           class="item item3"
           :src="src3"
           fit="scale-down"
@@ -20,30 +26,16 @@
       </div>
       <div class="two">
         <el-image
-          class="item item2"
-          :src="src2"
-          fit="scale-down"
-          @click.native="handleClick('src2')"
-        ></el-image>
-        <el-image
-          class="item item4"
-          :src="src4"
-          fit="scale-down"
-          @click.native="handleClick('src4')"
-        ></el-image>
-      </div>
-      <div class="three">
-        <el-image
           class="item item1"
           :src="src1"
           fit="scale-down"
           @click.native="handleClick('src1')"
         ></el-image>
         <el-image
-          class="item item5"
-          :src="src5"
+          class="item item4"
+          :src="src4"
           fit="scale-down"
-          @click.native="handleClick('src5')"
+          @click.native="handleClick('src4')"
         ></el-image>
       </div>
 
@@ -141,7 +133,6 @@ export default {
       src2: require('@/assets/img/Home/测试模块.png'),
       src3: require('@/assets/img/Home/训练模块.png'),
       src4: require('@/assets/img/Home/数据记录.png'),
-      src5: require('@/assets/img/Home/游戏.png'),
 
       centerDialogVisible: false, // 数据记录选择弹窗
 
@@ -324,26 +315,23 @@ export default {
       bottom: 20px;
     }
     .one {
-      margin-top: 30px;
-      @include flex(row, center, center);
-    }
-    .two {
+      margin-top: 80px;
       @include flex(row, center, center);
       .item2 {
-        margin-right: 260px;
+        margin-right: 350px;
       }
       .item4 {
-        margin-left: 260px;
+        margin-left: 350px;
       }
     }
-    .three {
-      margin-top: 60px;
+    .two {
+      margin-top: 150px;
       @include flex(row, center, center);
       .item1 {
-        margin-right: 420px;
+        margin-right: 800px;
       }
       .item5 {
-        margin-left: 420px;
+        margin-left: 800px;
       }
     }
 
