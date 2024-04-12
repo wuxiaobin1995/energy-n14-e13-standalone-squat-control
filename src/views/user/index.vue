@@ -446,7 +446,7 @@ export default {
               header: tHeader, // 表头 必填
               data: exportData, // 具体数据 必填
               filename:
-                '下蹲与控制反馈系统训练仪-单机版-所有用户信息 ' +
+                '下蹲控制反馈训练软件-单机版-所有用户信息 ' +
                 this.$moment().format('YYYY-MM-DD HH_mm_ss'), // 导出文件名，非必填
               autoWidth: true, // 自适应列宽，非必填
               bookType: 'xlsx' // 导出格式，非必填
