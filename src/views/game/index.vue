@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2023-02-07 14:36:30
- * @LastEditTime: 2024-08-28 10:51:41
+ * @LastEditTime: 2024-08-28 17:37:40
  * @Description : 游戏
 -->
 <template>
@@ -174,7 +174,7 @@ export default {
           /* 调起游戏操作 */
           const exec = require('child_process').exec
           exec(
-            `C:/Chicken-CrazyPark/Chicken-CrazyPark.exe`,
+            `C:/SquatGame/GameOneTest.exe`,
             (error, stdout, stderr) => {
               if (error != null) {
                 this.$message({
