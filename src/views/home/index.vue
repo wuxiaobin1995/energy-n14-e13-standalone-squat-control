@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-07-28 11:18:12
- * @LastEditTime: 2024-03-25 14:29:53
+ * @LastEditTime: 2024-08-28 10:51:10
  * @Description : home
 -->
 <template>
@@ -12,12 +12,6 @@
       </div>
       <div class="one">
         <el-image
-          class="item item2"
-          :src="src2"
-          fit="scale-down"
-          @click.native="handleClick('src2')"
-        ></el-image>
-        <el-image
           class="item item3"
           :src="src3"
           fit="scale-down"
@@ -26,16 +20,30 @@
       </div>
       <div class="two">
         <el-image
-          class="item item1"
-          :src="src1"
+          class="item item2"
+          :src="src2"
           fit="scale-down"
-          @click.native="handleClick('src1')"
+          @click.native="handleClick('src2')"
         ></el-image>
         <el-image
           class="item item4"
           :src="src4"
           fit="scale-down"
           @click.native="handleClick('src4')"
+        ></el-image>
+      </div>
+      <div class="three">
+        <el-image
+          class="item item1"
+          :src="src1"
+          fit="scale-down"
+          @click.native="handleClick('src1')"
+        ></el-image>
+        <el-image
+          class="item item5"
+          :src="src5"
+          fit="scale-down"
+          @click.native="handleClick('src5')"
         ></el-image>
       </div>
 
@@ -129,10 +137,12 @@ export default {
   data() {
     return {
       src0: require('@/assets/img/Home/设备实物.png'),
+
       src1: require('@/assets/img/Home/用户.png'),
       src2: require('@/assets/img/Home/测试模块.png'),
       src3: require('@/assets/img/Home/训练模块.png'),
       src4: require('@/assets/img/Home/数据记录.png'),
+      src5: require('@/assets/img/Home/游戏.png'),
 
       centerDialogVisible: false, // 数据记录选择弹窗
 
@@ -228,10 +238,28 @@ export default {
             .catch(() => {})
         }
       } else if (src === 'src5') {
-        this.$message({
-          message: '提示，该功能仍在开发阶段......',
-          type: 'warning'
-        })
+        if (this.$store.state.currentUserInfo.userId) {
+          this.$router.push({
+            path: '/game'
+          })
+        } else {
+          this.$confirm(
+            `检测到您还没有选择用户，请先到用户页面进行选择！`,
+            '提示',
+            {
+              type: 'warning',
+              center: true,
+              showCancelButton: false,
+              confirmButtonText: '确 定'
+            }
+          )
+            .then(() => {
+              this.$router.push({
+                path: '/user'
+              })
+            })
+            .catch(() => {})
+        }
       }
     },
 
@@ -315,23 +343,30 @@ export default {
       bottom: 20px;
     }
     .one {
-      margin-top: 80px;
+      margin-top: 30px;
       @include flex(row, center, center);
-      .item2 {
-        margin-right: 350px;
-      }
-      .item4 {
-        margin-left: 350px;
-      }
+      // .item3 {
+      //   margin-right: 350px;
+      // }
     }
     .two {
-      margin-top: 150px;
+      margin-top: 10px;
+      @include flex(row, center, center);
+      .item2 {
+        margin-right: 280px;
+      }
+      .item4 {
+        margin-left: 280px;
+      }
+    }
+    .three {
+      margin-top: 50px;
       @include flex(row, center, center);
       .item1 {
-        margin-right: 800px;
+        margin-right: 430px;
       }
       .item5 {
-        margin-left: 800px;
+        margin-left: 430px;
       }
     }
 
