@@ -1,7 +1,7 @@
 <!--
  * @Author      : Mr.bin
  * @Date        : 2022-09-14 13:57:04
- * @LastEditTime: 2022-09-14 14:51:53
+ * @LastEditTime: 2024-11-28 09:56:25
  * @Description : 重心转移训练-数据记录
 -->
 <template>
@@ -350,11 +350,13 @@ export default {
      * @param {*} row
      */
     handleDelete(index, row) {
-      this.$confirm('此操作将"永久删除"该数据, 是否继续?', '提示', {
+      this.$prompt('该操作将"永久删除"该数据，请谨慎！', '提示', {
+        type: 'warning',
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning',
-        center: true
+        inputPattern: /^energy$/,
+        inputErrorMessage: '密码不正确',
+        inputPlaceholder: '请输入删除密码' // 输入框的占位符
       })
         .then(() => {
           const db = initDB()
